@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101713"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png">
+<title>Mi Progreso</title>
+<style>
+:root{color-scheme:dark;--bg:#101713;--panel:#19241e;--panel2:#202e26;--line:#304238;--text:#f2f6f2;--muted:#a8b8ad;--green:#8bd5a9;--green2:#294d39}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:760px;margin:auto;padding:22px 16px 50px}.top{display:flex;justify-content:space-between;align-items:center;margin:8px 0 22px}.eyebrow{font-size:11px;letter-spacing:2px;color:var(--muted);font-weight:700}.title{font-size:30px;font-weight:800;margin-top:5px}.dot{color:var(--green)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat,.panel{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:15px}.stat .ico{font-size:22px}.label{font-size:12px;color:var(--muted);margin-top:8px}.value{font-size:23px;font-weight:750;margin-top:3px}
+.tabs{display:flex;gap:5px;background:var(--panel);padding:5px;border-radius:13px;margin:18px 0}.tab{flex:1;border:0;background:transparent;color:var(--muted);padding:11px 4px;border-radius:9px;font-weight:650}.tab.active{background:var(--green2);color:var(--green)}
+h2{font-size:19px;margin:0 0 5px}p.hint,.hint{font-size:12px;color:var(--muted);line-height:1.5}.form{display:grid;gap:14px}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:7px}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px;background:var(--panel2);color:var(--text);font:inherit}.choices{display:flex;gap:8px}.choice{flex:1;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--text);padding:12px 5px}.choice.selected{border-color:var(--green);background:var(--green2);color:var(--green);font-weight:700}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.primary{width:100%;border:0;border-radius:12px;background:var(--green);color:#102017;padding:14px;font-weight:800;font-size:15px}.secondary{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--panel2);color:var(--text)}.record{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:9px}.record small{display:block;color:var(--muted);margin-top:5px}.hidden{display:none!important}.barrow{display:flex;align-items:end;gap:8px;height:150px;margin-top:18px}.barcol{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;height:100%;gap:6px;font-size:11px;color:var(--muted)}.bar{width:min(100%,38px);background:var(--green);border-radius:6px 6px 2px 2px;min-height:3px}.footer{font-size:11px;color:var(--muted);text-align:center;margin:20px 0}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+@media(min-width:600px){.grid{grid-template-columns:repeat(4,1fr)}}
+</style></head>
+<body><main>
+<header class="top"><div><div class="eyebrow">TU SEGUIMIENTO PERSONAL</div><div class="title">Mi Progreso <span class="dot">●</span></div><div class="hint" id="today"></div></div><div style="font-size:36px">📈</div></header>
+<div class="grid">
+<div class="stat"><div class="ico">👟</div><div class="label">Pasos hoy</div><div class="value" id="sSteps">—</div></div>
+<div class="stat"><div class="ico">🏋️</div><div class="label">Gimnasio hoy</div><div class="value" id="sGym">—</div></div>
+<div class="stat"><div class="ico">⚖️</div><div class="label">Último peso</div><div class="value" id="sWeight">—</div></div>
+<div class="stat"><div class="ico">🌙</div><div class="label">Sueño hoy</div><div class="value" id="sSleep">—</div></div>
+</div>
+<nav class="tabs"><button class="tab active" data-tab="entry">📝 Registrar</button><button class="tab" data-tab="history">📅 Historial</button><button class="tab" data-tab="stats">📊 Evolución</button></nav>
+<section id="entry" class="panel form">
+<div><h2>Registro diario</h2><div class="hint">Rellénalo cuando quieras. Puedes dejar campos en blanco.</div></div>
+<div class="field"><label for="date">Fecha</label><input type="date" id="date"></div>
+<div class="field"><label for="steps">Pasos realizados</label><input type="number" id="steps" min="0" step="1" placeholder="Ej. 8500"></div>
+<div class="field"><label>¿Has ido al gimnasio?</label><div class="choices"><button class="choice" data-gym="yes">Sí</button><button class="choice" data-gym="no">No</button><button class="choice" data-gym="rest">Descanso</button></div></div>
+<div class="field"><label for="workout">¿Qué has entrenado?</label><input id="workout" placeholder="Ej. Pecho, espalda, piernas..."></div>
+<div class="two"><div class="field"><label for="weight">Peso (kg) · opcional</label><input type="number" id="weight" min="0" step=".1" placeholder="Ej. 70.5"></div><div class="field"><label for="sleep">Horas de sueño</label><input type="number" id="sleep" min="0" max="24" step=".5" placeholder="Ej. 8"></div></div>
+<div class="field"><label for="mood">¿Cómo ha ido el día?</label><select id="mood"><option value="">Seleccionar...</option><option>Muy bien</option><option>Bien</option><option>Normal</option><option>Regular</option></select></div>
+<div class="field"><label for="notes">Notas del día</label><textarea id="notes" rows="3" placeholder="Entrenamiento, energía, observaciones..."></textarea></div>
+<button class="primary" id="save">Guardar registro</button><div class="hint" id="msg" aria-live="polite">Tus datos se guardan en este navegador.</div>
+</section>
+<section id="history" class="hidden"><div class="panel"><h2>Historial</h2><div class="hint">Tus registros, del más reciente al más antiguo.</div></div><div id="historyList"></div></section>
+<section id="stats" class="hidden">
+<div class="panel"><h2>Tu evolución</h2><div class="grid" style="margin-top:13px">
+<div class="stat"><div class="label">Días registrados</div><div class="value" id="total">0</div></div><div class="stat"><div class="label">Días de gimnasio</div><div class="value" id="gymDays">0</div></div><div class="stat"><div class="label">Media de pasos</div><div class="value" id="avgSteps">—</div></div><div class="stat"><div class="label">Media de sueño</div><div class="value" id="avgSleep">—</div></div></div></div>
+<div class="panel" style="margin-top:10px"><h2>Pasos por día</h2><div id="chart" class="hint">Añade pasos para ver tu actividad.</div></div>
+<div class="panel" style="margin-top:10px"><h2>Historial de peso</h2><div id="weights" class="hint">Todavía no hay datos.</div></div>
+</section>
+<div class="panel" style="margin-top:14px"><strong style="font-size:14px">Copia de seguridad</strong><div class="hint">Exporta tus registros de vez en cuando para conservarlos.</div><div class="actions"><button class="secondary" id="export">↓ Exportar datos</button><button class="secondary" id="importBtn">↑ Importar copia</button><input id="file" type="file" accept=".json" hidden><button class="secondary" id="clear">Borrar registros</button></div></div>
+<div class="footer">La constancia importa más que un día concreto. El peso es opcional.</div>
+</main>
+<script>
+(()=>{const $=id=>document.getElementById(id),KEY='mi-progreso-pwa-v1';let data={};let gym='';
+try{data=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){}
+const today=()=>{let d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};
+const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'});
+const list=()=>Object.values(data).sort((a,b)=>b.date.localeCompare(a.date));
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(data));return true}catch(e){return false}};
+function setGym(v){gym=v;document.querySelectorAll('[data-gym]').forEach(b=>b.classList.toggle('selected',b.dataset.gym===v))}
+function load(d){$('date').value=d;let r=data[d]||{};$('steps').value=r.steps??'';$('weight').value=r.weight??'';$('sleep').value=r.sleep??'';$('workout').value=r.workout||'';$('mood').value=r.mood||'';$('notes').value=r.notes||'';setGym(r.gym||'')}
+function tab(t){['entry','history','stats'].forEach(x=>$(x).classList.toggle('hidden',x!==t));document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));render()}
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
+document.querySelectorAll('[data-gym]').forEach(b=>b.onclick=()=>setGym(b.dataset.gym));
+$('date').onchange=()=>load($('date').value);
+$('save').onclick=()=>{let d=$('date').value,s=$('steps').value,w=$('weight').value,sl=$('sleep').value;if(!d||s!==''&&(!Number.isInteger(Number(s))||Number(s)<0)||w!==''&&(!Number.isFinite(Number(w))||Number(w)<=0)||sl!==''&&(Number(sl)<0||Number(sl)>24)){ $('msg').textContent='Revisa la fecha y los valores introducidos.';return}
+data[d]={date:d,steps:s===''?null:Number(s),weight:w===''?null:Number(w),sleep:sl===''?null:Number(sl),gym,workout:$('workout').value.trim(),mood:$('mood').value,notes:$('notes').value.trim()};
+$('msg').textContent=persist()?'✓ Registro guardado.':'No se pudo guardar. Exporta una copia y revisa el espacio disponible.';render()};
+function render(){let a=list(),latest=a[0],t=today();$('today').textContent=new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});
+$('sSteps').textContent=data[t]?.steps==null?'—':data[t].steps.toLocaleString('es-ES');$('sGym').textContent=({yes:'Sí',no:'No',rest:'Descanso'})[data[t]?.gym]||'—';$('sWeight').textContent=latest?.weight==null?'—':latest.weight+' kg';$('sSleep').textContent=data[t]?.sleep==null?'—':data[t].sleep+' h';
+$('total').textContent=a.length;$('gymDays').textContent=a.filter(r=>r.gym==='yes').length;
+let ss=a.filter(r=>r.steps!=null),sl=a.filter(r=>r.sleep!=null);$('avgSteps').textContent=ss.length?Math.round(ss.reduce((n,r)=>n+r.steps,0)/ss.length).toLocaleString('es-ES'):'—';$('avgSleep').textContent=sl.length?(sl.reduce((n,r)=>n+r.sleep,0)/sl.length).toFixed(1)+' h':'—';
+$('historyList').replaceChildren();if(!a.length){let p=document.createElement('div');p.className='panel hint';p.style.marginTop='10px';p.textContent='Todavía no hay registros.';$('historyList').append(p)}
+a.forEach(r=>{let el=document.createElement('div');el.className='panel record';el.style.marginTop='9px';let info=document.createElement('div');let strong=document.createElement('strong');strong.textContent=fmt(r.date);let small=document.createElement('small');small.textContent=[r.steps!=null?r.steps.toLocaleString('es-ES')+' pasos':'',r.gym==='yes'?'Gimnasio':r.gym==='rest'?'Descanso':'',r.weight!=null?r.weight+' kg':''].filter(Boolean).join(' · ')||'Sin datos adicionales';info.append(strong,small);let b=document.createElement('button');b.className='secondary';b.textContent='Editar';b.onclick=()=>{load(r.date);tab('entry')};el.append(info,b);$('historyList').append(el)});
+let chart=a.filter(r=>r.steps!=null).slice(0,7).reverse(),max=Math.max(1,...chart.map(r=>r.steps));$('chart').replaceChildren();if(!chart.length){$('chart').textContent='Añade pasos para ver tu actividad.'}else{let row=document.createElement('div');row.className='barrow';chart.forEach(r=>{let col=document.createElement('div');col.className='barcol';let n=document.createElement('span');n.textContent=r.steps.toLocaleString('es-ES');let bar=document.createElement('div');bar.className='bar';bar.style.height=Math.max(3,r.steps/max*100)+'%';let day=document.createElement('span');day.textContent=fmt(r.date).split(' ')[0];col.append(n,bar,day);row.append(col)});$('chart').append(row)}
+let ws=a.filter(r=>r.weight!=null).reverse();$('weights').textContent=ws.length?ws.map(r=>fmt(r.date)+': '+r.weight+' kg').join(' · '):'Todavía no hay datos.'}
+$('export').onclick=()=>{let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='mi-progreso-copia.json';a.click();URL.revokeObjectURL(url)};
+$('importBtn').onclick=()=>$('file').click();$('file').onchange=async e=>{try{let o=JSON.parse(await e.target.files[0].text());if(!o||Array.isArray(o)||typeof o!=='object'||Object.values(o).some(r=>!r||typeof r.date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(r.date)))throw Error();data={...data,...o};persist();render();$('msg').textContent='Copia importada.'}catch(err){$('msg').textContent='El archivo no es una copia válida.'}e.target.value=''};
+$('clear').onclick=()=>{if(confirm('¿Borrar todos tus registros? Esta acción no se puede deshacer.')){data={};persist();load(today());render()}};
+load(today());render();
+})();
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+</script></body></html>
